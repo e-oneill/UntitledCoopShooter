@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\UntitledCoopShooter.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{DB309DC2-9908-4DCD-8CF9-0F4EEEFF4B6E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\UntitledCoopShooter.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\UntitledCoopShooterEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{F3F51AED-5FD4-499E-AF77-551A44A56281}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\UntitledCoopShooter">
+      <UniqueIdentifier>{DDB03141-C7CC-4DA0-8DA3-581477B4D171}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooter.Build.cs">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooter.cpp">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooter.h">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterCharacter.cpp">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterCharacter.h">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterGameMode.cpp">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterGameMode.h">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterHUD.cpp">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterHUD.h">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterProjectile.cpp">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooterProjectile.h">
+      <Filter>Source\UntitledCoopShooter</Filter>
+    </ClInclude>
+    <Filter Include="Source\UntitledCoopShooter\Private">
+      <UniqueIdentifier>{B66D14D6-DB81-47A0-BEB9-2BD68A4B8B5D}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\CoopCharacter.cpp">
+      <Filter>Source\UntitledCoopShooter\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\HitscanFirearm.cpp">
+      <Filter>Source\UntitledCoopShooter\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\IKAnimInstance.cpp">
+      <Filter>Source\UntitledCoopShooter\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\UntitledCoopShooter\Public">
+      <UniqueIdentifier>{BC0BBFB7-36DE-4F40-A131-0ADD6B7339DD}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\CoopCharacter.h">
+      <Filter>Source\UntitledCoopShooter\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\HitscanFirearm.h">
+      <Filter>Source\UntitledCoopShooter\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\IKAnimInstance.h">
+      <Filter>Source\UntitledCoopShooter\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

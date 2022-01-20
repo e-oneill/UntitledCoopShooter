@@ -1,0 +1,2 @@
+D:\UnrealProjects\UntitledCoopShooter\Intermediate\Build\Win64\UnrealEditor\Development\UntitledCoopShooter\Definitions.UntitledCoopShooter.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\UntitledCoopShooter.h

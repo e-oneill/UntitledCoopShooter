@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\UnrealProjects\\UntitledCoopShooter\\Source\\UntitledCoopShooter\\UntitledCoopShooter.Build.cs",
+		"D:\\UnrealProjects\\UntitledCoopShooter\\Source\\UntitledCoopShooter.Target.cs",
+		"D:\\UnrealProjects\\UntitledCoopShooter\\Source\\UntitledCoopShooterEditor.Target.cs"
+	],
+	"EngineVersion": "5.0.0"
+}

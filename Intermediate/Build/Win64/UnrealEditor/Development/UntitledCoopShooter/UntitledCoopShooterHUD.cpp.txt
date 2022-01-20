@@ -1,0 +1,17 @@
+D:\UnrealProjects\UntitledCoopShooter\Intermediate\Build\Win64\UnrealEditor\Development\UntitledCoopShooter\Definitions.UntitledCoopShooter.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\UntitledCoopShooterHUD.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\GameFramework/HUD.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\GameFramework/HUDHitBox.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\GameFramework/DebugTextInfo.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\DebugTextInfo.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\HUD.generated.h
+D:\UnrealProjects\UntitledCoopShooter\Intermediate\Build\Win64\UnrealEditor\Inc\UntitledCoopShooter\UntitledCoopShooterHUD.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Engine/Canvas.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Public\CanvasItem.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Engine/Font.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Engine/FontImportOptions.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\FontImportOptions.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\SlateCore\Public\Fonts/FontProviderInterface.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\SlateCore\FontProviderInterface.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\Font.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\Canvas.generated.h
