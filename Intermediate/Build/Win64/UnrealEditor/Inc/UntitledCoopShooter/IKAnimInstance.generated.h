@@ -16,12 +16,14 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define UntitledCoopShooter_Source_UntitledCoopShooter_Public_IKAnimInstance_h_15_SPARSE_DATA
 #define UntitledCoopShooter_Source_UntitledCoopShooter_Public_IKAnimInstance_h_15_RPC_WRAPPERS \
  \
+	DECLARE_FUNCTION(execUpdateAnimInstanceCurrentWeapon); \
 	DECLARE_FUNCTION(execFire); \
 	DECLARE_FUNCTION(execStopReload);
 
 
 #define UntitledCoopShooter_Source_UntitledCoopShooter_Public_IKAnimInstance_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execUpdateAnimInstanceCurrentWeapon); \
 	DECLARE_FUNCTION(execFire); \
 	DECLARE_FUNCTION(execStopReload);
 
@@ -70,6 +72,7 @@ public: \
 
 #define UntitledCoopShooter_Source_UntitledCoopShooter_Public_IKAnimInstance_h_15_PRIVATE_PROPERTY_OFFSET \
 	FORCEINLINE static uint32 __PPO__Character() { return STRUCT_OFFSET(UIKAnimInstance, Character); } \
+	FORCEINLINE static uint32 __PPO__CurrentWeapon() { return STRUCT_OFFSET(UIKAnimInstance, CurrentWeapon); } \
 	FORCEINLINE static uint32 __PPO__RelativeHandTransform() { return STRUCT_OFFSET(UIKAnimInstance, RelativeHandTransform); } \
 	FORCEINLINE static uint32 __PPO__SightTransform() { return STRUCT_OFFSET(UIKAnimInstance, SightTransform); } \
 	FORCEINLINE static uint32 __PPO__LeftHandTransform() { return STRUCT_OFFSET(UIKAnimInstance, LeftHandTransform); } \
@@ -77,6 +80,18 @@ public: \
 	FORCEINLINE static uint32 __PPO__AimAlpha() { return STRUCT_OFFSET(UIKAnimInstance, AimAlpha); } \
 	FORCEINLINE static uint32 __PPO__ReloadAlpha() { return STRUCT_OFFSET(UIKAnimInstance, ReloadAlpha); } \
 	FORCEINLINE static uint32 __PPO__WalkingSwayCurve() { return STRUCT_OFFSET(UIKAnimInstance, WalkingSwayCurve); } \
+	FORCEINLINE static uint32 __PPO__RecoilRotationXMin() { return STRUCT_OFFSET(UIKAnimInstance, RecoilRotationXMin); } \
+	FORCEINLINE static uint32 __PPO__RecoilRotationXMax() { return STRUCT_OFFSET(UIKAnimInstance, RecoilRotationXMax); } \
+	FORCEINLINE static uint32 __PPO__RecoilRotationYMin() { return STRUCT_OFFSET(UIKAnimInstance, RecoilRotationYMin); } \
+	FORCEINLINE static uint32 __PPO__RecoilRotationYMax() { return STRUCT_OFFSET(UIKAnimInstance, RecoilRotationYMax); } \
+	FORCEINLINE static uint32 __PPO__RecoilRotationZMin() { return STRUCT_OFFSET(UIKAnimInstance, RecoilRotationZMin); } \
+	FORCEINLINE static uint32 __PPO__RecoilRotationZMax() { return STRUCT_OFFSET(UIKAnimInstance, RecoilRotationZMax); } \
+	FORCEINLINE static uint32 __PPO__RecoilLocationXMin() { return STRUCT_OFFSET(UIKAnimInstance, RecoilLocationXMin); } \
+	FORCEINLINE static uint32 __PPO__RecoilLocationXMax() { return STRUCT_OFFSET(UIKAnimInstance, RecoilLocationXMax); } \
+	FORCEINLINE static uint32 __PPO__RecoilLocationYMin() { return STRUCT_OFFSET(UIKAnimInstance, RecoilLocationYMin); } \
+	FORCEINLINE static uint32 __PPO__RecoilLocationYMax() { return STRUCT_OFFSET(UIKAnimInstance, RecoilLocationYMax); } \
+	FORCEINLINE static uint32 __PPO__RecoilLocationZMin() { return STRUCT_OFFSET(UIKAnimInstance, RecoilLocationZMin); } \
+	FORCEINLINE static uint32 __PPO__RecoilLocationZMax() { return STRUCT_OFFSET(UIKAnimInstance, RecoilLocationZMax); } \
 	FORCEINLINE static uint32 __PPO__TurnRot() { return STRUCT_OFFSET(UIKAnimInstance, TurnRot); } \
 	FORCEINLINE static uint32 __PPO__TurnLocation() { return STRUCT_OFFSET(UIKAnimInstance, TurnLocation); } \
 	FORCEINLINE static uint32 __PPO__TurningSwayTransform() { return STRUCT_OFFSET(UIKAnimInstance, TurningSwayTransform); } \

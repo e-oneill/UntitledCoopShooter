@@ -19,11 +19,19 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 	ENGINE_API UClass* Z_Construct_UClass_UAnimInstance();
 	UPackage* Z_Construct_UPackage__Script_UntitledCoopShooter();
 	UNTITLEDCOOPSHOOTER_API UClass* Z_Construct_UClass_ACoopCharacter_NoRegister();
+	UNTITLEDCOOPSHOOTER_API UClass* Z_Construct_UClass_AHitscanFirearm_NoRegister();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FTransform();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 	ENGINE_API UClass* Z_Construct_UClass_UCurveVector_NoRegister();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FRotator();
 // End Cross Module References
+	DEFINE_FUNCTION(UIKAnimInstance::execUpdateAnimInstanceCurrentWeapon)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->UpdateAnimInstanceCurrentWeapon();
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(UIKAnimInstance::execFire)
 	{
 		P_FINISH;
@@ -44,6 +52,7 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 		static const FNameNativePtrPair Funcs[] = {
 			{ "Fire", &UIKAnimInstance::execFire },
 			{ "StopReload", &UIKAnimInstance::execStopReload },
+			{ "UpdateAnimInstanceCurrentWeapon", &UIKAnimInstance::execUpdateAnimInstanceCurrentWeapon },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
@@ -93,6 +102,29 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon_Statics
+	{
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon_Statics::Function_MetaDataParams[] = {
+		{ "Category", "Procedural Aiming" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UIKAnimInstance, nullptr, "UpdateAnimInstanceCurrentWeapon", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	UClass* Z_Construct_UClass_UIKAnimInstance_NoRegister()
 	{
 		return UIKAnimInstance::StaticClass();
@@ -108,6 +140,10 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_Character_MetaData[];
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_Character;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_CurrentWeapon_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentWeapon;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_RelativeHandTransform_MetaData[];
 #endif
@@ -136,6 +172,54 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_WalkingSwayCurve_MetaData[];
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_WalkingSwayCurve;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilRotationXMin_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilRotationXMin;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilRotationXMax_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilRotationXMax;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilRotationYMin_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilRotationYMin;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilRotationYMax_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilRotationYMax;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilRotationZMin_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilRotationZMin;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilRotationZMax_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilRotationZMax;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilLocationXMin_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilLocationXMin;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilLocationXMax_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilLocationXMax;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilLocationYMin_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilLocationYMin;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilLocationYMax_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilLocationYMax;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilLocationZMin_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilLocationZMin;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RecoilLocationZMax_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RecoilLocationZMax;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_TurnRot_MetaData[];
 #endif
@@ -167,6 +251,7 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 	const FClassFunctionLinkInfo Z_Construct_UClass_UIKAnimInstance_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UIKAnimInstance_Fire, "Fire" }, // 3826755928
 		{ &Z_Construct_UFunction_UIKAnimInstance_StopReload, "StopReload" }, // 3399312803
+		{ &Z_Construct_UFunction_UIKAnimInstance_UpdateAnimInstanceCurrentWeapon, "UpdateAnimInstanceCurrentWeapon" }, // 3555364228
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::Class_MetaDataParams[] = {
@@ -183,6 +268,13 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 	};
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_Character = { "Character", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, Character), Z_Construct_UClass_ACoopCharacter_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_Character_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_Character_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_CurrentWeapon_MetaData[] = {
+		{ "Category", "Procedural Aiming" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_CurrentWeapon = { "CurrentWeapon", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, CurrentWeapon), Z_Construct_UClass_AHitscanFirearm_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_CurrentWeapon_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_CurrentWeapon_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RelativeHandTransform_MetaData[] = {
 		{ "Category", "Procedural Aiming" },
@@ -233,6 +325,102 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_WalkingSwayCurve = { "WalkingSwayCurve", nullptr, (EPropertyFlags)0x0020080000000015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, WalkingSwayCurve), Z_Construct_UClass_UCurveVector_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_WalkingSwayCurve_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_WalkingSwayCurve_MetaData)) };
 #if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMin_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "Comment", "/* X: Movement of barrel upwards - should be positive */" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+		{ "ToolTip", "X: Movement of barrel upwards - should be positive" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMin = { "RecoilRotationXMin", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilRotationXMin), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMin_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMin_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMax_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMax = { "RecoilRotationXMax", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilRotationXMax), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMax_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMax_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMin_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "Comment", "/* Y: Movement of barrel left to right*/" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+		{ "ToolTip", "Y: Movement of barrel left to right" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMin = { "RecoilRotationYMin", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilRotationYMin), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMin_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMin_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMax_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMax = { "RecoilRotationYMax", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilRotationYMax), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMax_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMax_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMin_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "Comment", "/* Z: Roll of weapon - best to keep subtle*/" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+		{ "ToolTip", "Z: Roll of weapon - best to keep subtle" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMin = { "RecoilRotationZMin", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilRotationZMin), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMin_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMin_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMax_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMax = { "RecoilRotationZMax", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilRotationZMax), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMax_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMax_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMin_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "Comment", "/* Negative numbers will cause weapon to kick back into player */" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+		{ "ToolTip", "Negative numbers will cause weapon to kick back into player" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMin = { "RecoilLocationXMin", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilLocationXMin), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMin_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMin_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMax_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMax = { "RecoilLocationXMax", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilLocationXMax), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMax_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMax_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMin_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "Comment", "/* Should be a range from negative to positive, causing weapon to kick left and right */" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+		{ "ToolTip", "Should be a range from negative to positive, causing weapon to kick left and right" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMin = { "RecoilLocationYMin", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilLocationYMin), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMin_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMin_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMax_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMax = { "RecoilLocationYMax", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilLocationYMax), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMax_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMax_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMin_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "Comment", "/* Kick of weapon up and down in your hands - best to be subtle */" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+		{ "ToolTip", "Kick of weapon up and down in your hands - best to be subtle" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMin = { "RecoilLocationZMin", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilLocationZMin), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMin_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMin_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMax_MetaData[] = {
+		{ "Category", "Recoil Variables" },
+		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMax = { "RecoilLocationZMax", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, RecoilLocationZMax), METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMax_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMax_MetaData)) };
+#if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_TurnRot_MetaData[] = {
 		{ "Category", "Procedural Aiming" },
 		{ "ModuleRelativePath", "Public/IKAnimInstance.h" },
@@ -269,6 +457,7 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_OldRot = { "OldRot", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UIKAnimInstance, OldRot), Z_Construct_UScriptStruct_FRotator, METADATA_PARAMS(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_OldRot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_OldRot_MetaData)) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UIKAnimInstance_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_Character,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_CurrentWeapon,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RelativeHandTransform,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_SightTransform,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_LeftHandTransform,
@@ -276,6 +465,18 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_AimAlpha,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_ReloadAlpha,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_WalkingSwayCurve,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMin,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationXMax,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMin,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationYMax,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMin,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilRotationZMax,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMin,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationXMax,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMin,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationYMax,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMin,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_RecoilLocationZMax,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_TurnRot,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_TurnLocation,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UIKAnimInstance_Statics::NewProp_TurningSwayTransform,
@@ -309,7 +510,7 @@ void EmptyLinkFunctionForGeneratedCodeIKAnimInstance() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UIKAnimInstance, 3837452003);
+	IMPLEMENT_CLASS(UIKAnimInstance, 1065410835);
 	template<> UNTITLEDCOOPSHOOTER_API UClass* StaticClass<UIKAnimInstance>()
 	{
 		return UIKAnimInstance::StaticClass();

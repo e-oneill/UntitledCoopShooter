@@ -1,6 +1,7 @@
 D:\UnrealProjects\UntitledCoopShooter\Intermediate\Build\Win64\UnrealEditor\Development\UntitledCoopShooter\Definitions.UntitledCoopShooter.h
 D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\HitscanFirearm.h
 D:\UnrealProjects\UntitledCoopShooter\Intermediate\Build\Win64\UnrealEditor\Inc\UntitledCoopShooter\HitscanFirearm.generated.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter/UntitledCoopShooter.h
 D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\CoopCharacter.h
 D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\GameFramework/Character.h
 D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\GameFramework/CharacterMovementReplication.h
@@ -9,6 +10,7 @@ D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\GameFramework/RootMo
 D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\RootMotionSource.generated.h
 D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\Character.generated.h
 D:\UnrealProjects\UntitledCoopShooter\Intermediate\Build\Win64\UnrealEditor\Inc\UntitledCoopShooter\CoopCharacter.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Public\DrawDebugHelpers.h
 D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\IKAnimInstance.h
 D:\UnrealProjects\UntitledCoopShooter\Intermediate\Build\Win64\UnrealEditor\Inc\UntitledCoopShooter\IKAnimInstance.generated.h
 D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Kismet/GameplayStatics.h
@@ -20,3 +22,15 @@ D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\D
 D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Kismet\GameplayStaticsTypes.h
 D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\GameplayStaticsTypes.generated.h
 D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\GameplayStatics.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Public\Net/UnrealNetwork.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Particles/ParticleSystem.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Particles/ParticlePerfStats.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\ParticleSystem.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Particles/ParticleSystemComponent.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\Engine\Classes\Particles/Emitter.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\Emitter.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\ParticleSystemComponent.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\PhysicsCore\Public\PhysicalMaterials/PhysicalMaterial.h
+D:\EpicFolder\UE_5.0EA\Engine\Source\Runtime\PhysicsCore\Public\PhysicsSettingsEnums.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\PhysicsCore\PhysicsSettingsEnums.generated.h
+D:\EpicFolder\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\PhysicsCore\PhysicalMaterial.generated.h

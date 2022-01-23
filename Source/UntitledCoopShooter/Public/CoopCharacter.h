@@ -53,22 +53,44 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
-	/** Sound to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		USoundBase* FireSound;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		UAnimMontage* ReloadAnimation;
-
 	UFUNCTION(BlueprintPure)
 		UStaticMeshComponent* GetCurrentOptic() const { return CurrentOptic; }
 
 protected:
+	//variable for tracking the currently equipped weapon - pointer to actual actor
 	UPROPERTY(BlueprintReadOnly, Category = "Loadout")
 		AHitscanFirearm* CurrentWeapon;
+		//Variable used to track which of the subclasses is active
+		TSubclassOf<AHitscanFirearm> EquippedWeapon;
+	//the equipped primary weapon type
 	UPROPERTY(EditDefaultsOnly, Category = "Loadout")
 		TSubclassOf<AHitscanFirearm> PrimaryWeapon;
+	UPROPERTY(EditDefaultsOnly, Category = "Loadout")
+		TSubclassOf<AHitscanFirearm> SecondaryWeapon;
+	//the amount of ammo the player has for the currently equipped weapon
+	UPROPERTY(BlueprintReadOnly, Category = "Loadout")
+		int32 CurrentAmmo;
+	//the amount of ammo the player has for primary weapons
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
+		int32 PrimaryAmmo;
+	//the amount of ammo the player has for their sidearm
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
+		int32 SidearmAmmo;
+	//the amount of ammo the player has for special weapons
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
+		int32 SpecialAmmo;
 
+	UFUNCTION()
+	void SwitchWeapon(TSubclassOf<AHitscanFirearm> NewWeapon);
+
+	UFUNCTION()
+	void SwitchFireMode();
+
+	UFUNCTION()
+	void SwitchToPrimary();
+
+	UFUNCTION()
+	void SwitchToSecondary();
 
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
@@ -138,9 +160,10 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UFUNCTION(BlueprintPure)
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-	/*UFUNCTION(BlueprintPure)
-		USkeletalMeshComponent* GetFP_Gun() const { return FP_Gun; }*/
 	UFUNCTION(BlueprintPure)
 		AHitscanFirearm* GetCurrentWeapon() const { return CurrentWeapon; }
+	UFUNCTION()
+		void DeductAmmo();
+
 
 };

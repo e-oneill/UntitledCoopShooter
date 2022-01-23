@@ -26,6 +26,7 @@ class UStaticMeshComponent;
 	virtual bool Server_OpticIndex_Validate(uint8 ); \
 	virtual void Server_OpticIndex_Implementation(uint8 NewIndex); \
  \
+	DECLARE_FUNCTION(execDeductAmmo); \
 	DECLARE_FUNCTION(execGetCurrentWeapon); \
 	DECLARE_FUNCTION(execGetFirstPersonCameraComponent); \
 	DECLARE_FUNCTION(execGetMesh1P); \
@@ -37,6 +38,10 @@ class UStaticMeshComponent;
 	DECLARE_FUNCTION(execServerOnFire); \
 	DECLARE_FUNCTION(execServer_OpticIndex); \
 	DECLARE_FUNCTION(execOnRep_OpticIndex); \
+	DECLARE_FUNCTION(execSwitchToSecondary); \
+	DECLARE_FUNCTION(execSwitchToPrimary); \
+	DECLARE_FUNCTION(execSwitchFireMode); \
+	DECLARE_FUNCTION(execSwitchWeapon); \
 	DECLARE_FUNCTION(execGetCurrentOptic);
 
 
@@ -48,6 +53,7 @@ class UStaticMeshComponent;
 	virtual bool Server_OpticIndex_Validate(uint8 ); \
 	virtual void Server_OpticIndex_Implementation(uint8 NewIndex); \
  \
+	DECLARE_FUNCTION(execDeductAmmo); \
 	DECLARE_FUNCTION(execGetCurrentWeapon); \
 	DECLARE_FUNCTION(execGetFirstPersonCameraComponent); \
 	DECLARE_FUNCTION(execGetMesh1P); \
@@ -59,6 +65,10 @@ class UStaticMeshComponent;
 	DECLARE_FUNCTION(execServerOnFire); \
 	DECLARE_FUNCTION(execServer_OpticIndex); \
 	DECLARE_FUNCTION(execOnRep_OpticIndex); \
+	DECLARE_FUNCTION(execSwitchToSecondary); \
+	DECLARE_FUNCTION(execSwitchToPrimary); \
+	DECLARE_FUNCTION(execSwitchFireMode); \
+	DECLARE_FUNCTION(execSwitchWeapon); \
 	DECLARE_FUNCTION(execGetCurrentOptic);
 
 
@@ -135,6 +145,11 @@ public: \
 	FORCEINLINE static uint32 __PPO__FirstPersonCameraComponent() { return STRUCT_OFFSET(ACoopCharacter, FirstPersonCameraComponent); } \
 	FORCEINLINE static uint32 __PPO__CurrentWeapon() { return STRUCT_OFFSET(ACoopCharacter, CurrentWeapon); } \
 	FORCEINLINE static uint32 __PPO__PrimaryWeapon() { return STRUCT_OFFSET(ACoopCharacter, PrimaryWeapon); } \
+	FORCEINLINE static uint32 __PPO__SecondaryWeapon() { return STRUCT_OFFSET(ACoopCharacter, SecondaryWeapon); } \
+	FORCEINLINE static uint32 __PPO__CurrentAmmo() { return STRUCT_OFFSET(ACoopCharacter, CurrentAmmo); } \
+	FORCEINLINE static uint32 __PPO__PrimaryAmmo() { return STRUCT_OFFSET(ACoopCharacter, PrimaryAmmo); } \
+	FORCEINLINE static uint32 __PPO__SidearmAmmo() { return STRUCT_OFFSET(ACoopCharacter, SidearmAmmo); } \
+	FORCEINLINE static uint32 __PPO__SpecialAmmo() { return STRUCT_OFFSET(ACoopCharacter, SpecialAmmo); } \
 	FORCEINLINE static uint32 __PPO__OpticIndex() { return STRUCT_OFFSET(ACoopCharacter, OpticIndex); } \
 	FORCEINLINE static uint32 __PPO__bIsAiming() { return STRUCT_OFFSET(ACoopCharacter, bIsAiming); }
 

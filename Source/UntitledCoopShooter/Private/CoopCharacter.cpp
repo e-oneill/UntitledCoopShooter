@@ -18,7 +18,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 // Sets default values
 ACoopCharacter::ACoopCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Set size for collision capsule
@@ -67,18 +67,20 @@ void ACoopCharacter::BeginPlay()
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 	if (PrimaryWeapon)
 	{
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		CurrentWeapon = GetWorld()->SpawnActor<AHitscanFirearm>(PrimaryWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
-		CurrentWeapon->SetOwner(this);
-		CurrentWeapon->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_hand_r"));		
+
+		SwitchWeapon(PrimaryWeapon);
 	}
-	
-	
+
+
 	ProceduralAimingAnimInstance = Cast<UIKAnimInstance>(GetMesh1P()->GetAnimInstance());
 	if (!ProceduralAimingAnimInstance)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Player Anim Instance is not set to the IK Anim Instance"));
+	}
+	else
+	{
+		ProceduralAimingAnimInstance->UpdateAnimInstanceCurrentWeapon();
+		UE_LOG(LogTemp, Log, TEXT("Updating Anim Instance"));
 	}
 }
 
@@ -96,8 +98,11 @@ void ACoopCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ACoopCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ACoopCharacter::StopFire);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ACoopCharacter::Reload);
-
+	PlayerInputComponent->BindAction("Switch Fire Mode", IE_Pressed, this, &ACoopCharacter::SwitchFireMode);
+	PlayerInputComponent->BindAction("Switch to Primary Weapon", IE_Pressed, this, &ACoopCharacter::SwitchToPrimary);
+	PlayerInputComponent->BindAction("Switch to Secondary Weapon", IE_Pressed, this, &ACoopCharacter::SwitchToSecondary);
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACoopCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACoopCharacter::MoveRight);
@@ -109,6 +114,25 @@ void ACoopCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("TurnRate", this, &ACoopCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ACoopCharacter::LookUpAtRate);
+}
+
+void ACoopCharacter::DeductAmmo()
+{
+	CurrentAmmo--;
+	switch (CurrentWeapon->GetWeaponClass())
+	{
+	case EWeaponClass::Primary:
+		PrimaryAmmo--;
+		break;
+	case EWeaponClass::Sidearm:
+		SidearmAmmo--;
+		break;
+	case EWeaponClass::Special:
+		SpecialAmmo--;
+		break;
+	default:
+		break;
+	}
 }
 
 void ACoopCharacter::OnFire()
@@ -124,6 +148,68 @@ void ACoopCharacter::StopFire()
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->StopFire();
+	}
+}
+
+void ACoopCharacter::SwitchWeapon(TSubclassOf<AHitscanFirearm> NewWeapon)
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->Destroy();
+	}
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	CurrentWeapon = GetWorld()->SpawnActor<AHitscanFirearm>(NewWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	CurrentWeapon->SetOwner(this);
+	CurrentWeapon->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_hand_r"));
+	//CurrentWeapon->GetMeshComponent()->SetCastShadows(false);
+	CurrentWeapon->GetMeshComponent()->SetOnlyOwnerSee(true);
+	CurrentWeapon->GetMeshComponent()->bCastDynamicShadow = false;
+	CurrentWeapon->GetMeshComponent()->CastShadow = false;
+	switch (CurrentWeapon->GetWeaponClass())
+	{
+	case EWeaponClass::Primary:
+		CurrentAmmo = PrimaryAmmo;
+		break;
+	case EWeaponClass::Sidearm:
+		CurrentAmmo = SidearmAmmo;
+		break;
+	case EWeaponClass::Special:
+		CurrentAmmo = SpecialAmmo;
+		break;
+	default:
+		break;
+	}
+	EquippedWeapon = NewWeapon;
+	if (ProceduralAimingAnimInstance)
+	{
+		ProceduralAimingAnimInstance->UpdateAnimInstanceCurrentWeapon();
+	}
+}
+
+void ACoopCharacter::SwitchFireMode()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->SwitchFireMode();
+	}
+}
+
+void ACoopCharacter::SwitchToPrimary()
+{
+	if (EquippedWeapon != PrimaryWeapon)
+	{
+		SwitchWeapon(PrimaryWeapon);
+		EquippedWeapon = PrimaryWeapon;
+	}
+}
+
+void ACoopCharacter::SwitchToSecondary()
+{
+	if (EquippedWeapon != SecondaryWeapon)
+	{
+		SwitchWeapon(SecondaryWeapon);
+		EquippedWeapon = SecondaryWeapon;
 	}
 }
 
@@ -218,14 +304,14 @@ void ACoopCharacter::CycleOptic()
 
 void ACoopCharacter::Reload()
 {
-	if (ReloadAnimation != nullptr)
-	{
-		if (ProceduralAimingAnimInstance != nullptr)
-		{
-			ProceduralAimingAnimInstance->Reload();
-			ProceduralAimingAnimInstance->Montage_Play(ReloadAnimation, 1.f);
-		}
-	}
+	//if (ReloadAnimation != nullptr)
+	//{
+	//	if (ProceduralAimingAnimInstance != nullptr)
+	//	{
+	//		ProceduralAimingAnimInstance->Reload();
+	//		ProceduralAimingAnimInstance->Montage_Play(ReloadAnimation, 1.f);
+	//	}
+	//}
 }
 
 void ACoopCharacter::OnRep_OpticIndex()

@@ -21,10 +21,15 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 	UNTITLEDCOOPSHOOTER_API UClass* Z_Construct_UClass_AHitscanFirearm_NoRegister();
 	ENGINE_API UClass* Z_Construct_UClass_UCameraComponent_NoRegister();
 	ENGINE_API UClass* Z_Construct_UClass_USkeletalMeshComponent_NoRegister();
-	ENGINE_API UClass* Z_Construct_UClass_USoundBase_NoRegister();
-	ENGINE_API UClass* Z_Construct_UClass_UAnimMontage_NoRegister();
 	COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 // End Cross Module References
+	DEFINE_FUNCTION(ACoopCharacter::execDeductAmmo)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->DeductAmmo();
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(ACoopCharacter::execGetCurrentWeapon)
 	{
 		P_FINISH;
@@ -120,6 +125,35 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		P_THIS->OnRep_OpticIndex();
 		P_NATIVE_END;
 	}
+	DEFINE_FUNCTION(ACoopCharacter::execSwitchToSecondary)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->SwitchToSecondary();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(ACoopCharacter::execSwitchToPrimary)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->SwitchToPrimary();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(ACoopCharacter::execSwitchFireMode)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->SwitchFireMode();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(ACoopCharacter::execSwitchWeapon)
+	{
+		P_GET_OBJECT(UClass,Z_Param_NewWeapon);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->SwitchWeapon(Z_Param_NewWeapon);
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(ACoopCharacter::execGetCurrentOptic)
 	{
 		P_FINISH;
@@ -151,6 +185,7 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		UClass* Class = ACoopCharacter::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
 			{ "CycleOptic", &ACoopCharacter::execCycleOptic },
+			{ "DeductAmmo", &ACoopCharacter::execDeductAmmo },
 			{ "GetCurrentOptic", &ACoopCharacter::execGetCurrentOptic },
 			{ "GetCurrentWeapon", &ACoopCharacter::execGetCurrentWeapon },
 			{ "GetFirstPersonCameraComponent", &ACoopCharacter::execGetFirstPersonCameraComponent },
@@ -162,6 +197,10 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 			{ "Server_SetAiming", &ACoopCharacter::execServer_SetAiming },
 			{ "ServerOnFire", &ACoopCharacter::execServerOnFire },
 			{ "SetAiming", &ACoopCharacter::execSetAiming },
+			{ "SwitchFireMode", &ACoopCharacter::execSwitchFireMode },
+			{ "SwitchToPrimary", &ACoopCharacter::execSwitchToPrimary },
+			{ "SwitchToSecondary", &ACoopCharacter::execSwitchToSecondary },
+			{ "SwitchWeapon", &ACoopCharacter::execSwitchWeapon },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 	}
@@ -185,6 +224,28 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		if (!ReturnFunction)
 		{
 			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_ACoopCharacter_CycleOptic_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_ACoopCharacter_DeductAmmo_Statics
+	{
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_ACoopCharacter_DeductAmmo_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ACoopCharacter_DeductAmmo_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ACoopCharacter, nullptr, "DeductAmmo", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_ACoopCharacter_DeductAmmo_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_DeductAmmo_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_ACoopCharacter_DeductAmmo()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_ACoopCharacter_DeductAmmo_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
@@ -247,9 +308,7 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon_Statics::Function_MetaDataParams[] = {
-		{ "Comment", "/*UFUNCTION(BlueprintPure)\n\x09\x09USkeletalMeshComponent* GetFP_Gun() const { return FP_Gun; }*/" },
 		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
-		{ "ToolTip", "UFUNCTION(BlueprintPure)\n               USkeletalMeshComponent* GetFP_Gun() const { return FP_Gun; }" },
 	};
 #endif
 	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ACoopCharacter, nullptr, "GetCurrentWeapon", nullptr, nullptr, sizeof(CoopCharacter_eventGetCurrentWeapon_Parms), Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon_Statics::Function_MetaDataParams)) };
@@ -534,6 +593,104 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_ACoopCharacter_SwitchFireMode_Statics
+	{
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_ACoopCharacter_SwitchFireMode_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ACoopCharacter_SwitchFireMode_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ACoopCharacter, nullptr, "SwitchFireMode", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_ACoopCharacter_SwitchFireMode_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_SwitchFireMode_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_ACoopCharacter_SwitchFireMode()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_ACoopCharacter_SwitchFireMode_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary_Statics
+	{
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ACoopCharacter, nullptr, "SwitchToPrimary", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary_Statics
+	{
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ACoopCharacter, nullptr, "SwitchToSecondary", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics
+	{
+		struct CoopCharacter_eventSwitchWeapon_Parms
+		{
+			TSubclassOf<AHitscanFirearm>  NewWeapon;
+		};
+		static const UECodeGen_Private::FClassPropertyParams NewProp_NewWeapon;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::NewProp_NewWeapon = { "NewWeapon", nullptr, (EPropertyFlags)0x0014000000000080, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(CoopCharacter_eventSwitchWeapon_Parms, NewWeapon), Z_Construct_UClass_AHitscanFirearm_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::NewProp_NewWeapon,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ACoopCharacter, nullptr, "SwitchWeapon", nullptr, nullptr, sizeof(CoopCharacter_eventSwitchWeapon_Parms), Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_ACoopCharacter_SwitchWeapon()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_ACoopCharacter_SwitchWeapon_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	UClass* Z_Construct_UClass_ACoopCharacter_NoRegister()
 	{
 		return ACoopCharacter::StaticClass();
@@ -571,14 +728,6 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 #endif
 		static const UECodeGen_Private::FFloatPropertyParams NewProp_BaseLookUpRate;
 #if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_FireSound_MetaData[];
-#endif
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_FireSound;
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_ReloadAnimation_MetaData[];
-#endif
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReloadAnimation;
-#if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_CurrentWeapon_MetaData[];
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentWeapon;
@@ -586,6 +735,26 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_PrimaryWeapon_MetaData[];
 #endif
 		static const UECodeGen_Private::FClassPropertyParams NewProp_PrimaryWeapon;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SecondaryWeapon_MetaData[];
+#endif
+		static const UECodeGen_Private::FClassPropertyParams NewProp_SecondaryWeapon;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_CurrentAmmo_MetaData[];
+#endif
+		static const UECodeGen_Private::FIntPropertyParams NewProp_CurrentAmmo;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_PrimaryAmmo_MetaData[];
+#endif
+		static const UECodeGen_Private::FIntPropertyParams NewProp_PrimaryAmmo;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SidearmAmmo_MetaData[];
+#endif
+		static const UECodeGen_Private::FIntPropertyParams NewProp_SidearmAmmo;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SpecialAmmo_MetaData[];
+#endif
+		static const UECodeGen_Private::FIntPropertyParams NewProp_SpecialAmmo;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_OpticIndex_MetaData[];
 #endif
@@ -605,8 +774,9 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_ACoopCharacter_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_ACoopCharacter_CycleOptic, "CycleOptic" }, // 1188584968
+		{ &Z_Construct_UFunction_ACoopCharacter_DeductAmmo, "DeductAmmo" }, // 2539063366
 		{ &Z_Construct_UFunction_ACoopCharacter_GetCurrentOptic, "GetCurrentOptic" }, // 3380800520
-		{ &Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon, "GetCurrentWeapon" }, // 3021837717
+		{ &Z_Construct_UFunction_ACoopCharacter_GetCurrentWeapon, "GetCurrentWeapon" }, // 2007192486
 		{ &Z_Construct_UFunction_ACoopCharacter_GetFirstPersonCameraComponent, "GetFirstPersonCameraComponent" }, // 4121983756
 		{ &Z_Construct_UFunction_ACoopCharacter_GetMesh1P, "GetMesh1P" }, // 280082032
 		{ &Z_Construct_UFunction_ACoopCharacter_OnRep_bIsAiming, "OnRep_bIsAiming" }, // 2851877151
@@ -616,6 +786,10 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		{ &Z_Construct_UFunction_ACoopCharacter_Server_SetAiming, "Server_SetAiming" }, // 810399068
 		{ &Z_Construct_UFunction_ACoopCharacter_ServerOnFire, "ServerOnFire" }, // 752820164
 		{ &Z_Construct_UFunction_ACoopCharacter_SetAiming, "SetAiming" }, // 1205249474
+		{ &Z_Construct_UFunction_ACoopCharacter_SwitchFireMode, "SwitchFireMode" }, // 1738092243
+		{ &Z_Construct_UFunction_ACoopCharacter_SwitchToPrimary, "SwitchToPrimary" }, // 2626434796
+		{ &Z_Construct_UFunction_ACoopCharacter_SwitchToSecondary, "SwitchToSecondary" }, // 2893013171
+		{ &Z_Construct_UFunction_ACoopCharacter_SwitchWeapon, "SwitchWeapon" }, // 1811167409
 	};
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::Class_MetaDataParams[] = {
@@ -681,35 +855,66 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 #endif
 	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_BaseLookUpRate = { "BaseLookUpRate", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, BaseLookUpRate), METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_BaseLookUpRate_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_BaseLookUpRate_MetaData)) };
 #if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_FireSound_MetaData[] = {
-		{ "Category", "Gameplay" },
-		{ "Comment", "/** Sound to play each time we fire */" },
-		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
-		{ "ToolTip", "Sound to play each time we fire" },
-	};
-#endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_FireSound = { "FireSound", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, FireSound), Z_Construct_UClass_USoundBase_NoRegister, METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_FireSound_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_FireSound_MetaData)) };
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_ReloadAnimation_MetaData[] = {
-		{ "Category", "Gameplay" },
-		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
-	};
-#endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_ReloadAnimation = { "ReloadAnimation", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, ReloadAnimation), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_ReloadAnimation_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_ReloadAnimation_MetaData)) };
-#if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentWeapon_MetaData[] = {
 		{ "Category", "Loadout" },
+		{ "Comment", "//variable for tracking the currently equipped weapon - pointer to actual actor\n" },
 		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+		{ "ToolTip", "variable for tracking the currently equipped weapon - pointer to actual actor" },
 	};
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentWeapon = { "CurrentWeapon", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, CurrentWeapon), Z_Construct_UClass_AHitscanFirearm_NoRegister, METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentWeapon_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentWeapon_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryWeapon_MetaData[] = {
 		{ "Category", "Loadout" },
+		{ "Comment", "//the equipped primary weapon type\n" },
 		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+		{ "ToolTip", "the equipped primary weapon type" },
 	};
 #endif
 	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryWeapon = { "PrimaryWeapon", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, PrimaryWeapon), Z_Construct_UClass_AHitscanFirearm_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryWeapon_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryWeapon_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SecondaryWeapon_MetaData[] = {
+		{ "Category", "Loadout" },
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+	};
+#endif
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SecondaryWeapon = { "SecondaryWeapon", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, SecondaryWeapon), Z_Construct_UClass_AHitscanFirearm_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SecondaryWeapon_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SecondaryWeapon_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentAmmo_MetaData[] = {
+		{ "Category", "Loadout" },
+		{ "Comment", "//the amount of ammo the player has for the currently equipped weapon\n" },
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+		{ "ToolTip", "the amount of ammo the player has for the currently equipped weapon" },
+	};
+#endif
+	const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentAmmo = { "CurrentAmmo", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, CurrentAmmo), METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentAmmo_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentAmmo_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryAmmo_MetaData[] = {
+		{ "Category", "Loadout" },
+		{ "Comment", "//the amount of ammo the player has for primary weapons\n" },
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+		{ "ToolTip", "the amount of ammo the player has for primary weapons" },
+	};
+#endif
+	const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryAmmo = { "PrimaryAmmo", nullptr, (EPropertyFlags)0x0020080000010015, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, PrimaryAmmo), METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryAmmo_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryAmmo_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SidearmAmmo_MetaData[] = {
+		{ "Category", "Loadout" },
+		{ "Comment", "//the amount of ammo the player has for their sidearm\n" },
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+		{ "ToolTip", "the amount of ammo the player has for their sidearm" },
+	};
+#endif
+	const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SidearmAmmo = { "SidearmAmmo", nullptr, (EPropertyFlags)0x0020080000010015, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, SidearmAmmo), METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SidearmAmmo_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SidearmAmmo_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SpecialAmmo_MetaData[] = {
+		{ "Category", "Loadout" },
+		{ "Comment", "//the amount of ammo the player has for special weapons\n" },
+		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
+		{ "ToolTip", "the amount of ammo the player has for special weapons" },
+	};
+#endif
+	const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SpecialAmmo = { "SpecialAmmo", nullptr, (EPropertyFlags)0x0020080000010015, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(ACoopCharacter, SpecialAmmo), METADATA_PARAMS(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SpecialAmmo_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SpecialAmmo_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ACoopCharacter_Statics::NewProp_OpticIndex_MetaData[] = {
 		{ "ModuleRelativePath", "Public/CoopCharacter.h" },
@@ -735,10 +940,13 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentOptic,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_BaseTurnRate,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_BaseLookUpRate,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_FireSound,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_ReloadAnimation,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentWeapon,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryWeapon,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SecondaryWeapon,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_CurrentAmmo,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_PrimaryAmmo,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SidearmAmmo,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_SpecialAmmo,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_OpticIndex,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ACoopCharacter_Statics::NewProp_bIsAiming,
 	};
@@ -769,7 +977,7 @@ void EmptyLinkFunctionForGeneratedCodeCoopCharacter() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(ACoopCharacter, 3741427689);
+	IMPLEMENT_CLASS(ACoopCharacter, 3698226740);
 	template<> UNTITLEDCOOPSHOOTER_API UClass* StaticClass<ACoopCharacter>()
 	{
 		return ACoopCharacter::StaticClass();
