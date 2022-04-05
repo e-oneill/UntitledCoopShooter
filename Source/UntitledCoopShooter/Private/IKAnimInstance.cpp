@@ -9,7 +9,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Curves/CurveVector.h"
-
+#include "WeaponAttachment.h"
+#include "Net/UnrealNetwork.h"
 UIKAnimInstance::UIKAnimInstance()
 {
 	AimAlpha = 0.f;
@@ -42,7 +43,7 @@ void UIKAnimInstance::NativeBeginPlay()
 	{
 		UE_LOG(LogTemp, Log, TEXT("Valid Character"));
 		FTimerHandle TStartUpTimer;
-		GetWorld()->GetTimerManager().SetTimer(TStartUpTimer, this, &UIKAnimInstance::FirstStartUp, 0.5f, false);
+		//GetWorld()->GetTimerManager().SetTimer(TStartUpTimer, this, &UIKAnimInstance::FirstStartUp, 0.5f, false);
 		OldRot = Character->GetControlRotation(); //Not sure if this is replicated
 		//SetLeftHandIK();
 	}
@@ -79,7 +80,7 @@ void UIKAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (CurrentWeapon)
 	{
-		SetLeftHandIK();
+		//SetLeftHandIK();
 	}
 	
 }
@@ -144,37 +145,25 @@ void UIKAnimInstance::SetSightTransform() //Setting the relative transform for t
 	NewSightVector += ForwardVector;
 	SightTransform.SetLocation(NewSightVector);
 	SightTransform.SetRotation(Relative.Rotator().Quaternion());
+	Character->SetSightTransform(SightTransform);
 }
 
 void UIKAnimInstance::SetRelativeHandTransform()
 {
-	if (Character->GetCurrentWeapon()->GetCurrentOptic())
-	{
 		FTransform MeshTransform = Character->GetMesh1P()->GetSocketTransform(FName("hand_r"));
-		FTransform OpticSocketTransform = Character->GetCurrentWeapon()->GetCurrentOptic()->GetSocketTransform(FName("S_Aim"));
-
+		FTransform OpticSocketTransform = Character->GetCurrentWeapon()->GetCurrentOpticTransform();
+		//FTransform OpticSocketTransform = Character->GetCurrentWeapon()->GetCurrentOptic()->StaticMesh->GetSocketTransform(FName("S_Aim"));
 		RelativeHandTransform = UKismetMathLibrary::MakeRelativeTransform(OpticSocketTransform, MeshTransform);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Failed to get current optic"));
-	}
-
+		Character->SetRelativeHandTransform(RelativeHandTransform);	
 }
 
 void UIKAnimInstance::SetFinalHandTransform() //Function to set the right hand transform location, relative to the location of the center of the optic
 {
-	if (Character->GetCurrentWeapon()->GetCurrentOptic())
-	{
 		FTransform MeshTransform = Character->GetMesh1P()->GetSocketTransform(FName("hand_r"));
-		FTransform OpticSocketTransform = CurrentWeapon->GetCurrentOptic()->GetSocketTransform(FName("S_Aim"));; //Sights must have this socket for this to work
-
+		FTransform OpticSocketTransform = Character->GetCurrentWeapon()->GetCurrentOpticTransform();
+		//FTransform OpticSocketTransform = CurrentWeapon->GetCurrentOptic()->StaticMesh->GetSocketTransform(FName("S_Aim"));; //Sights must have this socket for this to work
+		
 		FinalHandTransform = UKismetMathLibrary::MakeRelativeTransform(OpticSocketTransform, MeshTransform);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Failed to get current optic"));
-	}
 }
 
 void UIKAnimInstance::SetLeftHandIK() //Set the transform destination of the Left Hand IK Bone, to stick the left hand to the grip point on the gun
@@ -183,6 +172,7 @@ void UIKAnimInstance::SetLeftHandIK() //Set the transform destination of the Lef
 	FTransform MeshTransform = Character->GetMesh1P()->GetSocketTransform(FName("hand_r"));
 
 	LeftHandTransform = UKismetMathLibrary::MakeRelativeTransform(GunHandSocket, MeshTransform);
+	Character->SetLeftHandTransform(LeftHandTransform);
 }
 
 void UIKAnimInstance::SetAiming(bool IsAiming)
@@ -265,6 +255,10 @@ void UIKAnimInstance::InterpRecoil(float DeltaSeconds)
 
 void UIKAnimInstance::Fire()
 {
+	if (!CurrentWeapon)
+	{
+		CurrentWeapon = Character->GetCurrentWeapon();
+	}
 	float FirearmWeight = CurrentWeapon->GetWeaponWeight();
 	float FirearmLateralRecoil = CurrentWeapon->GetWeaponLateralRecoil();
 	float FirearmVerticalRecoil = CurrentWeapon->GetWeaponVerticalRecoil();
@@ -288,20 +282,25 @@ void UIKAnimInstance::UpdateAnimInstanceCurrentWeapon()
 	if (Character)
 	{
 		CurrentWeapon = Character->GetCurrentWeapon();
-		SetSightTransform();
-		SetRelativeHandTransform();
-		UE_LOG(LogTemp, Log, TEXT("Set Current Weapon"));
-		RecoilRotationXMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
-		RecoilRotationXMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
-		RecoilRotationYMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
-		RecoilRotationYMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
-		RecoilRotationZMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
-		RecoilRotationZMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
-		RecoilLocationXMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
-		RecoilLocationXMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
-		RecoilLocationYMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
-		RecoilLocationYMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
-		RecoilLocationZMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
-		RecoilLocationZMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+		if (CurrentWeapon)
+		{
+			SetSightTransform();
+			SetRelativeHandTransform();
+			SetLeftHandIK();
+			UE_LOG(LogTemp, Log, TEXT("Set Current Weapon"));
+			RecoilRotationXMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
+			RecoilRotationXMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
+			RecoilRotationYMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+			RecoilRotationYMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+			RecoilRotationZMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+			RecoilRotationZMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+			RecoilLocationXMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
+			RecoilLocationXMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponVerticalRecoil(), 0.f, 40.f);
+			RecoilLocationYMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+			RecoilLocationYMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+			RecoilLocationZMin *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+			RecoilLocationZMax *= UKismetMathLibrary::NormalizeToRange(CurrentWeapon->GetWeaponLateralRecoil(), 0.f, 5.f);
+		}
+		
 	}
 }

@@ -1,7 +1,11 @@
-D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\HitscanFirearm.h
-D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\CoopCharacter.h
 D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\IKAnimInstance.h
-D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\UntitledCoopShooterGameMode.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\WeaponAttachment.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\DestructibleStaticObject.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\CoopCharacter.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\VitalsComponent.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\HitscanFirearm.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\Public\AICharacterBase.h
 D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\UntitledCoopShooterCharacter.h
 D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\UntitledCoopShooterHUD.h
 D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\UntitledCoopShooterProjectile.h
+D:\UnrealProjects\UntitledCoopShooter\Source\UntitledCoopShooter\UntitledCoopShooterGameMode.h

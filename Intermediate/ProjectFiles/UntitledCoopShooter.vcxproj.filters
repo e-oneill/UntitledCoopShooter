@@ -3,7 +3,7 @@
   <ItemGroup>
     <None Include="..\..\UntitledCoopShooter.uproject" />
     <Filter Include="Source">
-      <UniqueIdentifier>{DB309DC2-9908-4DCD-8CF9-0F4EEEFF4B6E}</UniqueIdentifier>
+      <UniqueIdentifier>{E61FD01E-0FC2-4FAA-A781-50277C867F96}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\UntitledCoopShooter.Target.cs">
       <Filter>Source</Filter>
@@ -11,8 +11,11 @@
     <None Include="..\..\Source\UntitledCoopShooterEditor.Target.cs">
       <Filter>Source</Filter>
     </None>
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\README.md" />
     <Filter Include="Config">
-      <UniqueIdentifier>{F3F51AED-5FD4-499E-AF77-551A44A56281}</UniqueIdentifier>
+      <UniqueIdentifier>{1BFE23F5-61F9-410B-B414-BFCDE6E11458}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Config\DefaultEditor.ini">
       <Filter>Config</Filter>
@@ -30,7 +33,7 @@
       <Filter>Config</Filter>
     </None>
     <Filter Include="Source\UntitledCoopShooter">
-      <UniqueIdentifier>{DDB03141-C7CC-4DA0-8DA3-581477B4D171}</UniqueIdentifier>
+      <UniqueIdentifier>{A27CC099-86B7-4634-AD38-02EFDBF9CFE0}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\UntitledCoopShooter\UntitledCoopShooter.Build.cs">
       <Filter>Source\UntitledCoopShooter</Filter>
@@ -66,9 +69,15 @@
       <Filter>Source\UntitledCoopShooter</Filter>
     </ClInclude>
     <Filter Include="Source\UntitledCoopShooter\Private">
-      <UniqueIdentifier>{B66D14D6-DB81-47A0-BEB9-2BD68A4B8B5D}</UniqueIdentifier>
+      <UniqueIdentifier>{7AD8E6C5-6A5D-46A3-9F85-67AF213AFAAB}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\AICharacterBase.cpp">
+      <Filter>Source\UntitledCoopShooter\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\CoopCharacter.cpp">
+      <Filter>Source\UntitledCoopShooter\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\DestructibleStaticObject.cpp">
       <Filter>Source\UntitledCoopShooter\Private</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\HitscanFirearm.cpp">
@@ -77,16 +86,34 @@
     <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\IKAnimInstance.cpp">
       <Filter>Source\UntitledCoopShooter\Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\VitalsComponent.cpp">
+      <Filter>Source\UntitledCoopShooter\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UntitledCoopShooter\Private\WeaponAttachment.cpp">
+      <Filter>Source\UntitledCoopShooter\Private</Filter>
+    </ClCompile>
     <Filter Include="Source\UntitledCoopShooter\Public">
-      <UniqueIdentifier>{BC0BBFB7-36DE-4F40-A131-0ADD6B7339DD}</UniqueIdentifier>
+      <UniqueIdentifier>{DC8FC3AC-EA5B-42FD-9AAA-B88621ADAB51}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\AICharacterBase.h">
+      <Filter>Source\UntitledCoopShooter\Public</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\CoopCharacter.h">
+      <Filter>Source\UntitledCoopShooter\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\DestructibleStaticObject.h">
       <Filter>Source\UntitledCoopShooter\Public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\HitscanFirearm.h">
       <Filter>Source\UntitledCoopShooter\Public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\IKAnimInstance.h">
+      <Filter>Source\UntitledCoopShooter\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\VitalsComponent.h">
+      <Filter>Source\UntitledCoopShooter\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UntitledCoopShooter\Public\WeaponAttachment.h">
       <Filter>Source\UntitledCoopShooter\Public</Filter>
     </ClInclude>
   </ItemGroup>

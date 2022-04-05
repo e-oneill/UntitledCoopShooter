@@ -14,7 +14,7 @@ class UMotionControllerComponent;
 class UAnimMontage;
 class USoundBase;
 class AHitscanFirearm;
-
+class UVitalsComponent;
 UCLASS()
 class UNTITLEDCOOPSHOOTER_API ACoopCharacter : public ACharacter
 {
@@ -24,13 +24,12 @@ class UNTITLEDCOOPSHOOTER_API ACoopCharacter : public ACharacter
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		USkeletalMeshComponent* Mesh1P;
 
-	///** Gun mesh: 1st person view (seen only by self) */
-	//UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	//	USkeletalMeshComponent* FP_Gun;
-
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		UCameraComponent* FirstPersonCameraComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+		UVitalsComponent* VitalsComponent;
 
 public:
 	// Sets default values for this character's properties
@@ -57,11 +56,29 @@ public:
 		UStaticMeshComponent* GetCurrentOptic() const { return CurrentOptic; }
 
 protected:
+	//Transforms for animation instance
+	UPROPERTY()
+		FTransform SightTransform;
+
+		/*UFUNCTION()
+		void OnRep_SightTransform(FTransform NewTransform);*/
+	UPROPERTY()
+		FTransform RelativeHandTransform;
+	UPROPERTY()
+		FTransform LeftHandTransform;
+	/*UFUNCTION()
+		void OnRep_LeftHandTransform(FTransform NewTransform);*/
 	//variable for tracking the currently equipped weapon - pointer to actual actor
-	UPROPERTY(BlueprintReadOnly, Category = "Loadout")
+	UPROPERTY(BlueprintReadOnly, Category = "Loadout", Replicated)
 		AHitscanFirearm* CurrentWeapon;
+	///** Third Person Gun mesh that is seen by other players */
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh, Replicated)
+		AHitscanFirearm* TP_Gun;
 		//Variable used to track which of the subclasses is active
+		UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 		TSubclassOf<AHitscanFirearm> EquippedWeapon;
+	UFUNCTION(Client, Reliable, WithValidation)
+		void OnRep_EquippedWeapon();
 	//the equipped primary weapon type
 	UPROPERTY(EditDefaultsOnly, Category = "Loadout")
 		TSubclassOf<AHitscanFirearm> PrimaryWeapon;
@@ -82,7 +99,9 @@ protected:
 
 	UFUNCTION()
 	void SwitchWeapon(TSubclassOf<AHitscanFirearm> NewWeapon);
-
+	
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_SwitchWeapon(TSubclassOf<AHitscanFirearm> NewWeapon);
 	UFUNCTION()
 	void SwitchFireMode();
 
@@ -126,6 +145,9 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void ServerOnFire();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerOnStopFire();
+
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	class UIKAnimInstance* ProceduralAimingAnimInstance;
@@ -164,6 +186,16 @@ public:
 		AHitscanFirearm* GetCurrentWeapon() const { return CurrentWeapon; }
 	UFUNCTION()
 		void DeductAmmo();
-
-
+	UFUNCTION(BlueprintPure)
+		FTransform GetSightTransform() const {return SightTransform;}
+	UFUNCTION(BlueprintCallable)
+		void SetSightTransform(FTransform NewTransform) { SightTransform = NewTransform; }
+	UFUNCTION(BlueprintPure)
+		FTransform GetRelativeHandTransform() const {return RelativeHandTransform;}
+	UFUNCTION(BlueprintCallable)
+		void SetRelativeHandTransform(FTransform NewTransform) {RelativeHandTransform = NewTransform; }
+	UFUNCTION(BlueprintPure)
+		FTransform GetLeftHandTransform() const { return LeftHandTransform; }
+	UFUNCTION(BlueprintCallable)
+		void SetLeftHandTransform(FTransform NewTransform) { LeftHandTransform = NewTransform; }
 };

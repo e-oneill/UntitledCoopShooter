@@ -8,6 +8,7 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+struct FTransform;
 class AHitscanFirearm;
 class UCameraComponent;
 class USkeletalMeshComponent;
@@ -21,11 +22,23 @@ class UStaticMeshComponent;
 #define UntitledCoopShooter_Source_UntitledCoopShooter_Public_CoopCharacter_h_21_RPC_WRAPPERS \
 	virtual bool Server_SetAiming_Validate(bool ); \
 	virtual void Server_SetAiming_Implementation(bool IsAiming); \
+	virtual bool ServerOnStopFire_Validate(); \
+	virtual void ServerOnStopFire_Implementation(); \
 	virtual bool ServerOnFire_Validate(); \
 	virtual void ServerOnFire_Implementation(); \
 	virtual bool Server_OpticIndex_Validate(uint8 ); \
 	virtual void Server_OpticIndex_Implementation(uint8 NewIndex); \
+	virtual bool Server_SwitchWeapon_Validate(TSubclassOf<AHitscanFirearm>  ); \
+	virtual void Server_SwitchWeapon_Implementation(TSubclassOf<AHitscanFirearm>  NewWeapon); \
+	virtual bool OnRep_EquippedWeapon_Validate(); \
+	virtual void OnRep_EquippedWeapon_Implementation(); \
  \
+	DECLARE_FUNCTION(execSetLeftHandTransform); \
+	DECLARE_FUNCTION(execGetLeftHandTransform); \
+	DECLARE_FUNCTION(execSetRelativeHandTransform); \
+	DECLARE_FUNCTION(execGetRelativeHandTransform); \
+	DECLARE_FUNCTION(execSetSightTransform); \
+	DECLARE_FUNCTION(execGetSightTransform); \
 	DECLARE_FUNCTION(execDeductAmmo); \
 	DECLARE_FUNCTION(execGetCurrentWeapon); \
 	DECLARE_FUNCTION(execGetFirstPersonCameraComponent); \
@@ -35,24 +48,39 @@ class UStaticMeshComponent;
 	DECLARE_FUNCTION(execServer_SetAiming); \
 	DECLARE_FUNCTION(execOnRep_bIsAiming); \
 	DECLARE_FUNCTION(execSetAiming); \
+	DECLARE_FUNCTION(execServerOnStopFire); \
 	DECLARE_FUNCTION(execServerOnFire); \
 	DECLARE_FUNCTION(execServer_OpticIndex); \
 	DECLARE_FUNCTION(execOnRep_OpticIndex); \
 	DECLARE_FUNCTION(execSwitchToSecondary); \
 	DECLARE_FUNCTION(execSwitchToPrimary); \
 	DECLARE_FUNCTION(execSwitchFireMode); \
+	DECLARE_FUNCTION(execServer_SwitchWeapon); \
 	DECLARE_FUNCTION(execSwitchWeapon); \
+	DECLARE_FUNCTION(execOnRep_EquippedWeapon); \
 	DECLARE_FUNCTION(execGetCurrentOptic);
 
 
 #define UntitledCoopShooter_Source_UntitledCoopShooter_Public_CoopCharacter_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual bool Server_SetAiming_Validate(bool ); \
 	virtual void Server_SetAiming_Implementation(bool IsAiming); \
+	virtual bool ServerOnStopFire_Validate(); \
+	virtual void ServerOnStopFire_Implementation(); \
 	virtual bool ServerOnFire_Validate(); \
 	virtual void ServerOnFire_Implementation(); \
 	virtual bool Server_OpticIndex_Validate(uint8 ); \
 	virtual void Server_OpticIndex_Implementation(uint8 NewIndex); \
+	virtual bool Server_SwitchWeapon_Validate(TSubclassOf<AHitscanFirearm>  ); \
+	virtual void Server_SwitchWeapon_Implementation(TSubclassOf<AHitscanFirearm>  NewWeapon); \
+	virtual bool OnRep_EquippedWeapon_Validate(); \
+	virtual void OnRep_EquippedWeapon_Implementation(); \
  \
+	DECLARE_FUNCTION(execSetLeftHandTransform); \
+	DECLARE_FUNCTION(execGetLeftHandTransform); \
+	DECLARE_FUNCTION(execSetRelativeHandTransform); \
+	DECLARE_FUNCTION(execGetRelativeHandTransform); \
+	DECLARE_FUNCTION(execSetSightTransform); \
+	DECLARE_FUNCTION(execGetSightTransform); \
 	DECLARE_FUNCTION(execDeductAmmo); \
 	DECLARE_FUNCTION(execGetCurrentWeapon); \
 	DECLARE_FUNCTION(execGetFirstPersonCameraComponent); \
@@ -62,13 +90,16 @@ class UStaticMeshComponent;
 	DECLARE_FUNCTION(execServer_SetAiming); \
 	DECLARE_FUNCTION(execOnRep_bIsAiming); \
 	DECLARE_FUNCTION(execSetAiming); \
+	DECLARE_FUNCTION(execServerOnStopFire); \
 	DECLARE_FUNCTION(execServerOnFire); \
 	DECLARE_FUNCTION(execServer_OpticIndex); \
 	DECLARE_FUNCTION(execOnRep_OpticIndex); \
 	DECLARE_FUNCTION(execSwitchToSecondary); \
 	DECLARE_FUNCTION(execSwitchToPrimary); \
 	DECLARE_FUNCTION(execSwitchFireMode); \
+	DECLARE_FUNCTION(execServer_SwitchWeapon); \
 	DECLARE_FUNCTION(execSwitchWeapon); \
+	DECLARE_FUNCTION(execOnRep_EquippedWeapon); \
 	DECLARE_FUNCTION(execGetCurrentOptic);
 
 
@@ -80,6 +111,10 @@ class UStaticMeshComponent;
 	struct CoopCharacter_eventServer_SetAiming_Parms \
 	{ \
 		bool IsAiming; \
+	}; \
+	struct CoopCharacter_eventServer_SwitchWeapon_Parms \
+	{ \
+		TSubclassOf<AHitscanFirearm>  NewWeapon; \
 	};
 
 
@@ -94,7 +129,10 @@ public: \
 	enum class ENetFields_Private : uint16 \
 	{ \
 		NETFIELD_REP_START=(uint16)((int32)Super::ENetFields_Private::NETFIELD_REP_END + (int32)1), \
-		OpticIndex=NETFIELD_REP_START, \
+		CurrentWeapon=NETFIELD_REP_START, \
+		TP_Gun, \
+		EquippedWeapon, \
+		OpticIndex, \
 		bIsAiming, \
 		NETFIELD_REP_END=bIsAiming	}; \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
@@ -110,7 +148,10 @@ public: \
 	enum class ENetFields_Private : uint16 \
 	{ \
 		NETFIELD_REP_START=(uint16)((int32)Super::ENetFields_Private::NETFIELD_REP_END + (int32)1), \
-		OpticIndex=NETFIELD_REP_START, \
+		CurrentWeapon=NETFIELD_REP_START, \
+		TP_Gun, \
+		EquippedWeapon, \
+		OpticIndex, \
 		bIsAiming, \
 		NETFIELD_REP_END=bIsAiming	}; \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
@@ -143,7 +184,13 @@ public: \
 #define UntitledCoopShooter_Source_UntitledCoopShooter_Public_CoopCharacter_h_21_PRIVATE_PROPERTY_OFFSET \
 	FORCEINLINE static uint32 __PPO__Mesh1P() { return STRUCT_OFFSET(ACoopCharacter, Mesh1P); } \
 	FORCEINLINE static uint32 __PPO__FirstPersonCameraComponent() { return STRUCT_OFFSET(ACoopCharacter, FirstPersonCameraComponent); } \
+	FORCEINLINE static uint32 __PPO__VitalsComponent() { return STRUCT_OFFSET(ACoopCharacter, VitalsComponent); } \
+	FORCEINLINE static uint32 __PPO__SightTransform() { return STRUCT_OFFSET(ACoopCharacter, SightTransform); } \
+	FORCEINLINE static uint32 __PPO__RelativeHandTransform() { return STRUCT_OFFSET(ACoopCharacter, RelativeHandTransform); } \
+	FORCEINLINE static uint32 __PPO__LeftHandTransform() { return STRUCT_OFFSET(ACoopCharacter, LeftHandTransform); } \
 	FORCEINLINE static uint32 __PPO__CurrentWeapon() { return STRUCT_OFFSET(ACoopCharacter, CurrentWeapon); } \
+	FORCEINLINE static uint32 __PPO__TP_Gun() { return STRUCT_OFFSET(ACoopCharacter, TP_Gun); } \
+	FORCEINLINE static uint32 __PPO__EquippedWeapon() { return STRUCT_OFFSET(ACoopCharacter, EquippedWeapon); } \
 	FORCEINLINE static uint32 __PPO__PrimaryWeapon() { return STRUCT_OFFSET(ACoopCharacter, PrimaryWeapon); } \
 	FORCEINLINE static uint32 __PPO__SecondaryWeapon() { return STRUCT_OFFSET(ACoopCharacter, SecondaryWeapon); } \
 	FORCEINLINE static uint32 __PPO__CurrentAmmo() { return STRUCT_OFFSET(ACoopCharacter, CurrentAmmo); } \

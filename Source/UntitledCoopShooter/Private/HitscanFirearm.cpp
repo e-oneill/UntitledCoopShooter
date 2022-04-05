@@ -4,6 +4,9 @@
 #include "HitscanFirearm.h"
 #include "UntitledCoopShooter/UntitledCoopShooter.h"
 #include "CoopCharacter.h"
+#include "AICharacterBase.h"
+#include "WeaponAttachment.h"
+#include "VitalsComponent.h"
 #include "DrawDebugHelpers.h"
 #include "IKAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -24,9 +27,13 @@ AHitscanFirearm::AHitscanFirearm()
 	MeshComponent->CastShadow = true;
 	MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = MeshComponent;
-
 	WeaponEffectiveRange = 10000.f;
+
+	bReplicates = true;
+	//SetReplicateMovement(true);
 }
+
+
 
 // Called when the game starts or when spawned
 void AHitscanFirearm::BeginPlay()
@@ -35,7 +42,11 @@ void AHitscanFirearm::BeginPlay()
 	Character = Cast<ACoopCharacter>(GetOwner());
 	if (Character)
 	{
-		MeshComponent->AttachToComponent(Character->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_hand_r"));
+		//MeshComponent->AttachToComponent(Character->GetMesh1P(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_hand_r"));
+	}
+	else
+	{
+		AICharacter = Cast<AAICharacterBase>(GetOwner());
 	}
 	if (bCanFullAuto)
 	{
@@ -49,8 +60,31 @@ void AHitscanFirearm::BeginPlay()
 	{
 		CurrentFireMode = EFireMode::SemiAuto;
 	}
+
+	
 	SecondsBetweenShots = 60.f / RateOfFire;
 	
+}
+
+void AHitscanFirearm::SetupOptic()
+{
+	if (Optic)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		CurrentOptic = GetWorld()->SpawnActor<AWeaponAttachment>(Optic, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		CurrentOptic->SetOwner(this);
+		CurrentOptic->AttachToComponent(MeshComponent, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_Sight"));
+		CurrentOpticTransform = CurrentOptic->StaticMesh->GetSocketTransform(FName("S_Aim"));
+		CurrentOptic->StaticMesh->SetOnlyOwnerSee(true);
+		CurrentOptic->StaticMesh->bCastDynamicShadow = false;
+		CurrentOptic->StaticMesh->CastShadow = false;
+	}
+	else
+	{
+		CurrentOpticTransform = MeshComponent->GetSocketTransform(FName("S_IronSights"));
+		UE_LOG(LogTemp, Log, TEXT("Setting up ironsights"));
+	}
 }
 
 void AHitscanFirearm::OnRep_HitScanTrace()
@@ -103,30 +137,60 @@ void AHitscanFirearm::StartFire()
 
 void AHitscanFirearm::StopFire()
 {
+	if (!HasAuthority())
+	{
+		ServerStopFire();
+	}
 	GetWorldTimerManager().ClearTimer(T_TimeBetweenShotsTimer);
 }
-
-void AHitscanFirearm::Fire()
+//At the moment, the Fire methods runs on both the server and the clients - to get the IK animation system replicating right, I likely need to move only the hittrace to the server and run the rest client-side
+void AHitscanFirearm::Fire() 
 {
-	if (!Character)
+	if (!HasAuthority())
+	{
+		ServerFire();
+		//return;
+	}
+	if (!Character && !AICharacter)
 	{
 		Character = Cast<ACoopCharacter>(GetOwner());
+		if (!Character)
+		{
+			AICharacter = Cast<AAICharacterBase>(GetOwner());
+		}
 	}
-	else if (Character)
+	else if (Character || AICharacter)
 	{
 			UIKAnimInstance* ProceduralAimingAnimInstance = Cast<UIKAnimInstance>(Character->GetMesh1P()->GetAnimInstance());
 			if (ProceduralAimingAnimInstance)
 			{
-				UE_LOG(LogTemp, Log, TEXT("Anim instance exists"));
+				//UE_LOG(LogTemp, Log, TEXT("Anim instance exists"));
 				ProceduralAimingAnimInstance->Fire();
 			}
 			else
 			{
-				UE_LOG(LogTemp, Log, TEXT("Anim instance doesn't exist"));
+				if (!AICharacter)
+				{
+					UE_LOG(LogTemp, Log, TEXT("Character does not have IK Anim instance set"));
+				}
 			}
 			FVector EyeLocation;
 			FRotator EyeRotation;
-			Character->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+			FCollisionQueryParams QueryParams;
+			QueryParams.AddIgnoredActor(this);
+			QueryParams.bTraceComplex = true;
+			QueryParams.bReturnPhysicalMaterial = true;
+			if (Character)
+			{
+				Character->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+				QueryParams.AddIgnoredActor(Character);
+			}
+			else if (AICharacter)
+			{
+				AICharacter->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+				QueryParams.AddIgnoredActor(AICharacter);
+			}
+			
 			FVector MuzzleLocation = MeshComponent->GetSocketLocation(FName("S_Muzzle"));
 			FRotator MuzzleRotation = MeshComponent->GetSocketRotation(FName("S_Muzzle"));
 			//consider whether to add bullet spread
@@ -134,11 +198,8 @@ void AHitscanFirearm::Fire()
 			ShotDirection = MuzzleRotation.Vector(); //Testing using Muzzle-based hit tracing
 			FVector TraceEnd = EyeLocation + (ShotDirection * WeaponEffectiveRange);
 			FVector TraceEndPoint = TraceEnd;
-			FCollisionQueryParams QueryParams;
-			QueryParams.AddIgnoredActor(Character);
-			QueryParams.AddIgnoredActor(this);
-			QueryParams.bTraceComplex = true;
-			QueryParams.bReturnPhysicalMaterial = true;
+			
+			
 			EPhysicalSurface SurfaceType = SurfaceType_Default;
 			FHitResult Hit;
 			if (GetWorld()->LineTraceSingleByChannel(Hit, MuzzleLocation, TraceEnd, COLLISION_WEAPON, QueryParams))
@@ -148,12 +209,24 @@ void AHitscanFirearm::Fire()
 				AActor* HitActor = Hit.GetActor();
 				TraceEndPoint = Hit.ImpactPoint;
 				float ActualDamage = WeaponDamage;
-				if (SurfaceType == SURFACE_FLESHVULNERABLE)
+				UVitalsComponent* VitalsComp = HitActor->FindComponentByClass<UVitalsComponent>();
+				if (VitalsComp)
 				{
-					ActualDamage *= 3.f; //headshot damage
+					if (SurfaceType == SURFACE_FLESHVULNERABLE && (VitalsComp->GetShield() <= 0.f && VitalsComp->GetArmor() <= 0.f)) //Headshots get no bonus damage on shield or armor
+					{
+						ActualDamage *= 3.f; //headshot damage
+					}
 				}
-
-				UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, Character->GetInstigatorController(), Character, DamageType);
+				if (Character)
+				{
+					UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, Character->GetInstigatorController(), Character, DamageType);
+					Character->DeductAmmo();
+				}
+				else if (AICharacter)
+				{
+					UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, AICharacter->GetInstigatorController(), AICharacter, DamageType);
+				}
+				
 				PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
 			}
 			PlayFireEffects(TraceEndPoint);
@@ -165,8 +238,28 @@ void AHitscanFirearm::Fire()
 				HitScanTrace.SurfaceType = SurfaceType;
 			}
 			LastFireTime = GetWorld()->TimeSeconds;
-			Character->DeductAmmo();
+			
 	}
+}
+
+void AHitscanFirearm::ServerFire_Implementation()
+{
+	Fire();
+}
+
+bool AHitscanFirearm::ServerFire_Validate()
+{
+	return true;
+}
+
+void AHitscanFirearm::ServerStopFire_Implementation()
+{
+	StopFire();
+}
+
+bool AHitscanFirearm::ServerStopFire_Validate()
+{
+	return true;
 }
 
 void AHitscanFirearm::BurstFire()

@@ -10,7 +10,8 @@ class USkeletalMeshComponent;
 class UAnimMontage;
 class USoundBase;
 class ACoopCharacter;
-
+class AAICharacterBase;
+class AWeaponAttachment;
 //A custom struct that contains information of a single Hit Scan Weapon Line trace
 USTRUCT()
 struct FHitScanTrace
@@ -56,10 +57,17 @@ public:
 	AHitscanFirearm();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Optics)
-		TArray<UStaticMeshComponent*> Optics;
+		TArray<TSubclassOf<AWeaponAttachment>> Optics;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Optics)
-		UStaticMeshComponent* CurrentOptic;
+		TSubclassOf<AWeaponAttachment> Optic;
+
+	UPROPERTY(BlueprintReadWrite, Category = Optics)
+		AWeaponAttachment* CurrentOptic;
+
+		FTransform CurrentOpticTransform;
+
+		void SetupOptic();
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
@@ -69,10 +77,10 @@ public:
 		UAnimMontage* ReloadAnimation;
 	
 	ACoopCharacter* Character;
-	
+	AAICharacterBase* AICharacter;
 
 	UFUNCTION(BlueprintPure)
-		UStaticMeshComponent* GetCurrentOptic() const { return CurrentOptic; }
+		AWeaponAttachment* GetCurrentOptic() const { return CurrentOptic; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -144,6 +152,12 @@ public:
 
 	void Fire();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerStopFire();
+
 	void BurstFire();
 
 	//Getters
@@ -159,6 +173,8 @@ public:
 		float GetWeaponVerticalRecoil() const {return WeaponVerticalRecoil;}
 	UFUNCTION(BlueprintPure)
 		EWeaponClass GetWeaponClass() const {return WeaponClass;}
+	UFUNCTION(BlueprintPure)
+		FTransform GetCurrentOpticTransform() const {return CurrentOpticTransform;}
 	UFUNCTION()
 		void SwitchFireMode();
 };

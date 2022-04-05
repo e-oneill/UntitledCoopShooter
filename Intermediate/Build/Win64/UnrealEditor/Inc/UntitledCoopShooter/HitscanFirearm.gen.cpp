@@ -22,11 +22,12 @@ void EmptyLinkFunctionForGeneratedCodeHitscanFirearm() {}
 	UNTITLEDCOOPSHOOTER_API UClass* Z_Construct_UClass_AHitscanFirearm_NoRegister();
 	UNTITLEDCOOPSHOOTER_API UClass* Z_Construct_UClass_AHitscanFirearm();
 	ENGINE_API UClass* Z_Construct_UClass_AActor();
-	ENGINE_API UClass* Z_Construct_UClass_UStaticMeshComponent_NoRegister();
+	UNTITLEDCOOPSHOOTER_API UClass* Z_Construct_UClass_AWeaponAttachment_NoRegister();
+	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FTransform();
 	ENGINE_API UClass* Z_Construct_UClass_USkeletalMeshComponent_NoRegister();
+	COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 	ENGINE_API UClass* Z_Construct_UClass_USoundBase_NoRegister();
 	ENGINE_API UClass* Z_Construct_UClass_UAnimMontage_NoRegister();
-	COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 	ENGINE_API UClass* Z_Construct_UClass_UDamageType_NoRegister();
 // End Cross Module References
 	static UEnum* EFireMode_StaticEnum()
@@ -254,6 +255,13 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		P_THIS->SwitchFireMode();
 		P_NATIVE_END;
 	}
+	DEFINE_FUNCTION(AHitscanFirearm::execGetCurrentOpticTransform)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		*(FTransform*)Z_Param__Result=P_THIS->GetCurrentOpticTransform();
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(AHitscanFirearm::execGetWeaponClass)
 	{
 		P_FINISH;
@@ -296,6 +304,30 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		*(USkeletalMeshComponent**)Z_Param__Result=P_THIS->GetMeshComponent();
 		P_NATIVE_END;
 	}
+	DEFINE_FUNCTION(AHitscanFirearm::execServerStopFire)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		if (!P_THIS->ServerStopFire_Validate())
+		{
+			RPC_ValidateFailed(TEXT("ServerStopFire_Validate"));
+			return;
+		}
+		P_THIS->ServerStopFire_Implementation();
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(AHitscanFirearm::execServerFire)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		if (!P_THIS->ServerFire_Validate())
+		{
+			RPC_ValidateFailed(TEXT("ServerFire_Validate"));
+			return;
+		}
+		P_THIS->ServerFire_Implementation();
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(AHitscanFirearm::execOnRep_HitScanTrace)
 	{
 		P_FINISH;
@@ -307,14 +339,25 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 	{
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(UStaticMeshComponent**)Z_Param__Result=P_THIS->GetCurrentOptic();
+		*(AWeaponAttachment**)Z_Param__Result=P_THIS->GetCurrentOptic();
 		P_NATIVE_END;
+	}
+	static FName NAME_AHitscanFirearm_ServerFire = FName(TEXT("ServerFire"));
+	void AHitscanFirearm::ServerFire()
+	{
+		ProcessEvent(FindFunctionChecked(NAME_AHitscanFirearm_ServerFire),NULL);
+	}
+	static FName NAME_AHitscanFirearm_ServerStopFire = FName(TEXT("ServerStopFire"));
+	void AHitscanFirearm::ServerStopFire()
+	{
+		ProcessEvent(FindFunctionChecked(NAME_AHitscanFirearm_ServerStopFire),NULL);
 	}
 	void AHitscanFirearm::StaticRegisterNativesAHitscanFirearm()
 	{
 		UClass* Class = AHitscanFirearm::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
 			{ "GetCurrentOptic", &AHitscanFirearm::execGetCurrentOptic },
+			{ "GetCurrentOpticTransform", &AHitscanFirearm::execGetCurrentOpticTransform },
 			{ "GetMeshComponent", &AHitscanFirearm::execGetMeshComponent },
 			{ "GetWeaponClass", &AHitscanFirearm::execGetWeaponClass },
 			{ "GetWeaponErgonomics", &AHitscanFirearm::execGetWeaponErgonomics },
@@ -322,6 +365,8 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 			{ "GetWeaponVerticalRecoil", &AHitscanFirearm::execGetWeaponVerticalRecoil },
 			{ "GetWeaponWeight", &AHitscanFirearm::execGetWeaponWeight },
 			{ "OnRep_HitScanTrace", &AHitscanFirearm::execOnRep_HitScanTrace },
+			{ "ServerFire", &AHitscanFirearm::execServerFire },
+			{ "ServerStopFire", &AHitscanFirearm::execServerStopFire },
 			{ "SwitchFireMode", &AHitscanFirearm::execSwitchFireMode },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -330,11 +375,8 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 	{
 		struct HitscanFirearm_eventGetCurrentOptic_Parms
 		{
-			UStaticMeshComponent* ReturnValue;
+			AWeaponAttachment* ReturnValue;
 		};
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[];
-#endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
 		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 #if WITH_METADATA
@@ -342,12 +384,7 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 #endif
 		static const UECodeGen_Private::FFunctionParams FuncParams;
 	};
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::NewProp_ReturnValue_MetaData[] = {
-		{ "EditInline", "true" },
-	};
-#endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(HitscanFirearm_eventGetCurrentOptic_Parms, ReturnValue), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::NewProp_ReturnValue_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::NewProp_ReturnValue_MetaData)) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(HitscanFirearm_eventGetCurrentOptic_Parms, ReturnValue), Z_Construct_UClass_AWeaponAttachment_NoRegister, METADATA_PARAMS(nullptr, 0) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::NewProp_ReturnValue,
 	};
@@ -363,6 +400,38 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		if (!ReturnFunction)
 		{
 			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics
+	{
+		struct HitscanFirearm_eventGetCurrentOpticTransform_Parms
+		{
+			FTransform ReturnValue;
+		};
+		static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(HitscanFirearm_eventGetCurrentOpticTransform_Parms, ReturnValue), Z_Construct_UScriptStruct_FTransform, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::NewProp_ReturnValue,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/HitscanFirearm.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHitscanFirearm, nullptr, "GetCurrentOpticTransform", nullptr, nullptr, sizeof(HitscanFirearm_eventGetCurrentOpticTransform_Parms), Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54820401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
@@ -593,6 +662,50 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_AHitscanFirearm_ServerFire_Statics
+	{
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AHitscanFirearm_ServerFire_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/HitscanFirearm.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHitscanFirearm_ServerFire_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHitscanFirearm, nullptr, "ServerFire", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x80220CC0, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AHitscanFirearm_ServerFire_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AHitscanFirearm_ServerFire_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_AHitscanFirearm_ServerFire()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_AHitscanFirearm_ServerFire_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+	struct Z_Construct_UFunction_AHitscanFirearm_ServerStopFire_Statics
+	{
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AHitscanFirearm_ServerStopFire_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/HitscanFirearm.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHitscanFirearm_ServerStopFire_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHitscanFirearm, nullptr, "ServerStopFire", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x80220CC0, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AHitscanFirearm_ServerStopFire_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AHitscanFirearm_ServerStopFire_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_AHitscanFirearm_ServerStopFire()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_AHitscanFirearm_ServerStopFire_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	struct Z_Construct_UFunction_AHitscanFirearm_SwitchFireMode_Statics
 	{
 #if WITH_METADATA
@@ -630,11 +743,15 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_MeshComponent_MetaData[];
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_MeshComponent;
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_Optics_Inner;
+		static const UECodeGen_Private::FClassPropertyParams NewProp_Optics_Inner;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_Optics_MetaData[];
 #endif
 		static const UECodeGen_Private::FArrayPropertyParams NewProp_Optics;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_Optic_MetaData[];
+#endif
+		static const UECodeGen_Private::FClassPropertyParams NewProp_Optic;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_CurrentOptic_MetaData[];
 #endif
@@ -721,7 +838,8 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		(UObject* (*)())Z_Construct_UPackage__Script_UntitledCoopShooter,
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_AHitscanFirearm_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic, "GetCurrentOptic" }, // 2497635262
+		{ &Z_Construct_UFunction_AHitscanFirearm_GetCurrentOptic, "GetCurrentOptic" }, // 3523039087
+		{ &Z_Construct_UFunction_AHitscanFirearm_GetCurrentOpticTransform, "GetCurrentOpticTransform" }, // 923482163
 		{ &Z_Construct_UFunction_AHitscanFirearm_GetMeshComponent, "GetMeshComponent" }, // 119203018
 		{ &Z_Construct_UFunction_AHitscanFirearm_GetWeaponClass, "GetWeaponClass" }, // 2340142176
 		{ &Z_Construct_UFunction_AHitscanFirearm_GetWeaponErgonomics, "GetWeaponErgonomics" }, // 3698119861
@@ -729,6 +847,8 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		{ &Z_Construct_UFunction_AHitscanFirearm_GetWeaponVerticalRecoil, "GetWeaponVerticalRecoil" }, // 3697157449
 		{ &Z_Construct_UFunction_AHitscanFirearm_GetWeaponWeight, "GetWeaponWeight" }, // 3374454753
 		{ &Z_Construct_UFunction_AHitscanFirearm_OnRep_HitScanTrace, "OnRep_HitScanTrace" }, // 3591250040
+		{ &Z_Construct_UFunction_AHitscanFirearm_ServerFire, "ServerFire" }, // 1210885555
+		{ &Z_Construct_UFunction_AHitscanFirearm_ServerStopFire, "ServerStopFire" }, // 640402571
 		{ &Z_Construct_UFunction_AHitscanFirearm_SwitchFireMode, "SwitchFireMode" }, // 3906180696
 	};
 #if WITH_METADATA
@@ -747,23 +867,28 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 	};
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_MeshComponent = { "MeshComponent", nullptr, (EPropertyFlags)0x0040000000090009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AHitscanFirearm, MeshComponent), Z_Construct_UClass_USkeletalMeshComponent_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_MeshComponent_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_MeshComponent_MetaData)) };
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_Inner = { "Optics", nullptr, (EPropertyFlags)0x0000000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(nullptr, 0) };
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_Inner = { "Optics", nullptr, (EPropertyFlags)0x0004000000000000, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_AWeaponAttachment_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(nullptr, 0) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_MetaData[] = {
 		{ "Category", "Optics" },
-		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/HitscanFirearm.h" },
 	};
 #endif
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics = { "Optics", nullptr, (EPropertyFlags)0x001000800000000d, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AHitscanFirearm, Optics), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_MetaData)) };
+	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics = { "Optics", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AHitscanFirearm, Optics), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_MetaData)) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optic_MetaData[] = {
+		{ "Category", "Optics" },
+		{ "ModuleRelativePath", "Public/HitscanFirearm.h" },
+	};
+#endif
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optic = { "Optic", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AHitscanFirearm, Optic), Z_Construct_UClass_AWeaponAttachment_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optic_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optic_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic_MetaData[] = {
 		{ "Category", "Optics" },
-		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/HitscanFirearm.h" },
 	};
 #endif
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic = { "CurrentOptic", nullptr, (EPropertyFlags)0x001000000008000d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AHitscanFirearm, CurrentOptic), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic_MetaData)) };
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic = { "CurrentOptic", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(AHitscanFirearm, CurrentOptic), Z_Construct_UClass_AWeaponAttachment_NoRegister, METADATA_PARAMS(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic_MetaData)) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_FireSound_MetaData[] = {
 		{ "Category", "Gameplay" },
@@ -935,6 +1060,7 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_MeshComponent,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics_Inner,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optics,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_Optic,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_CurrentOptic,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_FireSound,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHitscanFirearm_Statics::NewProp_ReloadAnimation,
@@ -983,7 +1109,7 @@ static struct FScriptStruct_UntitledCoopShooter_StaticRegisterNativesFHitScanTra
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(AHitscanFirearm, 3848024666);
+	IMPLEMENT_CLASS(AHitscanFirearm, 1806359256);
 	template<> UNTITLEDCOOPSHOOTER_API UClass* StaticClass<AHitscanFirearm>()
 	{
 		return AHitscanFirearm::StaticClass();

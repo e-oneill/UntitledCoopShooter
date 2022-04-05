@@ -8,49 +8,66 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+struct FTransform;
 enum class EWeaponClass : uint8;
 class USkeletalMeshComponent;
-class UStaticMeshComponent;
+class AWeaponAttachment;
 #ifdef UNTITLEDCOOPSHOOTER_HitscanFirearm_generated_h
 #error "HitscanFirearm.generated.h already included, missing '#pragma once' in HitscanFirearm.h"
 #endif
 #define UNTITLEDCOOPSHOOTER_HitscanFirearm_generated_h
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_18_GENERATED_BODY \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_19_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FHitScanTrace_Statics; \
 	UNTITLEDCOOPSHOOTER_API static class UScriptStruct* StaticStruct();
 
 
 template<> UNTITLEDCOOPSHOOTER_API UScriptStruct* StaticStruct<struct FHitScanTrace>();
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_SPARSE_DATA
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_RPC_WRAPPERS \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_SPARSE_DATA
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_RPC_WRAPPERS \
+	virtual bool ServerStopFire_Validate(); \
+	virtual void ServerStopFire_Implementation(); \
+	virtual bool ServerFire_Validate(); \
+	virtual void ServerFire_Implementation(); \
  \
 	DECLARE_FUNCTION(execSwitchFireMode); \
+	DECLARE_FUNCTION(execGetCurrentOpticTransform); \
 	DECLARE_FUNCTION(execGetWeaponClass); \
 	DECLARE_FUNCTION(execGetWeaponVerticalRecoil); \
 	DECLARE_FUNCTION(execGetWeaponLateralRecoil); \
 	DECLARE_FUNCTION(execGetWeaponErgonomics); \
 	DECLARE_FUNCTION(execGetWeaponWeight); \
 	DECLARE_FUNCTION(execGetMeshComponent); \
+	DECLARE_FUNCTION(execServerStopFire); \
+	DECLARE_FUNCTION(execServerFire); \
 	DECLARE_FUNCTION(execOnRep_HitScanTrace); \
 	DECLARE_FUNCTION(execGetCurrentOptic);
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_RPC_WRAPPERS_NO_PURE_DECLS \
+	virtual bool ServerStopFire_Validate(); \
+	virtual void ServerStopFire_Implementation(); \
+	virtual bool ServerFire_Validate(); \
+	virtual void ServerFire_Implementation(); \
  \
 	DECLARE_FUNCTION(execSwitchFireMode); \
+	DECLARE_FUNCTION(execGetCurrentOpticTransform); \
 	DECLARE_FUNCTION(execGetWeaponClass); \
 	DECLARE_FUNCTION(execGetWeaponVerticalRecoil); \
 	DECLARE_FUNCTION(execGetWeaponLateralRecoil); \
 	DECLARE_FUNCTION(execGetWeaponErgonomics); \
 	DECLARE_FUNCTION(execGetWeaponWeight); \
 	DECLARE_FUNCTION(execGetMeshComponent); \
+	DECLARE_FUNCTION(execServerStopFire); \
+	DECLARE_FUNCTION(execServerFire); \
 	DECLARE_FUNCTION(execOnRep_HitScanTrace); \
 	DECLARE_FUNCTION(execGetCurrentOptic);
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_INCLASS_NO_PURE_DECLS \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_EVENT_PARMS
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_CALLBACK_WRAPPERS
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAHitscanFirearm(); \
 	friend struct Z_Construct_UClass_AHitscanFirearm_Statics; \
@@ -66,7 +83,7 @@ public: \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_INCLASS \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_INCLASS \
 private: \
 	static void StaticRegisterNativesAHitscanFirearm(); \
 	friend struct Z_Construct_UClass_AHitscanFirearm_Statics; \
@@ -82,7 +99,7 @@ public: \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_STANDARD_CONSTRUCTORS \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API AHitscanFirearm(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AHitscanFirearm) \
@@ -95,7 +112,7 @@ private: \
 public:
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_ENHANCED_CONSTRUCTORS \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	NO_API AHitscanFirearm(AHitscanFirearm&&); \
@@ -106,7 +123,7 @@ public: \
 	DEFINE_DEFAULT_CONSTRUCTOR_CALL(AHitscanFirearm)
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_PRIVATE_PROPERTY_OFFSET \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_PRIVATE_PROPERTY_OFFSET \
 	FORCEINLINE static uint32 __PPO__MeshComponent() { return STRUCT_OFFSET(AHitscanFirearm, MeshComponent); } \
 	FORCEINLINE static uint32 __PPO__WeaponClass() { return STRUCT_OFFSET(AHitscanFirearm, WeaponClass); } \
 	FORCEINLINE static uint32 __PPO__WeaponDamage() { return STRUCT_OFFSET(AHitscanFirearm, WeaponDamage); } \
@@ -125,27 +142,32 @@ public: \
 	FORCEINLINE static uint32 __PPO__HitScanTrace() { return STRUCT_OFFSET(AHitscanFirearm, HitScanTrace); }
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_45_PROLOG
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_GENERATED_BODY_LEGACY \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_46_PROLOG \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_EVENT_PARMS
+
+
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_PRIVATE_PROPERTY_OFFSET \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_SPARSE_DATA \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_RPC_WRAPPERS \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_INCLASS \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_STANDARD_CONSTRUCTORS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_PRIVATE_PROPERTY_OFFSET \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_SPARSE_DATA \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_RPC_WRAPPERS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_CALLBACK_WRAPPERS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_INCLASS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_GENERATED_BODY \
+#define UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_PRIVATE_PROPERTY_OFFSET \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_SPARSE_DATA \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_INCLASS_NO_PURE_DECLS \
-	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_48_ENHANCED_CONSTRUCTORS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_PRIVATE_PROPERTY_OFFSET \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_SPARSE_DATA \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_RPC_WRAPPERS_NO_PURE_DECLS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_CALLBACK_WRAPPERS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_INCLASS_NO_PURE_DECLS \
+	UntitledCoopShooter_Source_UntitledCoopShooter_Public_HitscanFirearm_h_49_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

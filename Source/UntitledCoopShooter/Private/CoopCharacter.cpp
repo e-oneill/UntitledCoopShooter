@@ -3,6 +3,8 @@
 
 #include "CoopCharacter.h"
 #include "HitscanFirearm.h"
+#include "WeaponAttachment.h"
+#include "VitalsComponent.h"
 #include "IKAnimInstance.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -12,6 +14,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "DrawDebugHelpers.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -44,11 +47,14 @@ ACoopCharacter::ACoopCharacter()
 	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 
 	// Create a gun mesh component
-	//FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
-	//FP_Gun->SetOnlyOwnerSee(false);			// otherwise won't be visible in the multiplayer
-	//FP_Gun->bCastDynamicShadow = false;
-	//FP_Gun->CastShadow = false;
-	//FP_Gun->SetupAttachment(RootComponent);
+	//TP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TP_Gun"));
+	//TP_Gun->SetOnlyOwnerSee(false);			// otherwise won't be visible in the multiplayer
+	//TP_Gun->SetOwnerNoSee(true);
+	//TP_Gun->bCastDynamicShadow = true;
+	//TP_Gun->CastShadow = true;
+	//TP_Gun->SetupAttachment(RootComponent);
+
+	VitalsComponent = CreateDefaultSubobject<UVitalsComponent>(TEXT("VitalsComponent"));
 
 	bIsAiming = false;
 	OpticIndex = 0;
@@ -63,15 +69,6 @@ void ACoopCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-
-	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
-	if (PrimaryWeapon)
-	{
-
-		SwitchWeapon(PrimaryWeapon);
-	}
-
-
 	ProceduralAimingAnimInstance = Cast<UIKAnimInstance>(GetMesh1P()->GetAnimInstance());
 	if (!ProceduralAimingAnimInstance)
 	{
@@ -82,6 +79,11 @@ void ACoopCharacter::BeginPlay()
 		ProceduralAimingAnimInstance->UpdateAnimInstanceCurrentWeapon();
 		UE_LOG(LogTemp, Log, TEXT("Updating Anim Instance"));
 	}
+	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
+	SwitchWeapon(PrimaryWeapon);
+
+
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -137,6 +139,11 @@ void ACoopCharacter::DeductAmmo()
 
 void ACoopCharacter::OnFire()
 {
+	//if (!HasAuthority())
+	//{
+	//	ServerOnFire();
+	//	return;
+	//}
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->StartFire();
@@ -145,27 +152,91 @@ void ACoopCharacter::OnFire()
 
 void ACoopCharacter::StopFire()
 {
+	//if (!HasAuthority())
+	//{
+	//	ServerOnStopFire();
+	//	return;
+	//}
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->StopFire();
 	}
 }
 
+void ACoopCharacter::OnRep_EquippedWeapon_Implementation()
+{
+	if (ProceduralAimingAnimInstance)
+	{
+		ProceduralAimingAnimInstance->UpdateAnimInstanceCurrentWeapon();
+	}
+}
+
+bool ACoopCharacter::OnRep_EquippedWeapon_Validate()
+{
+	return true;
+}
+
+//void ACoopCharacter::OnRep_SightTransform(FTransform NewTransform)
+//{
+//	SightTransform = NewTransform;
+//}
+//
+//void ACoopCharacter::OnRep_LeftHandTransform(FTransform NewTransform)
+//{
+//	LeftHandTransform = NewTransform;
+//}
+
+
 void ACoopCharacter::SwitchWeapon(TSubclassOf<AHitscanFirearm> NewWeapon)
+{
+	Server_SwitchWeapon(NewWeapon);
+}
+
+void ACoopCharacter::Server_SwitchWeapon_Implementation(TSubclassOf<AHitscanFirearm> NewWeapon)
 {
 	if (CurrentWeapon)
 	{
+		if (CurrentWeapon->CurrentOptic)
+		{
+			CurrentWeapon->CurrentOptic->Destroy();
+			TP_Gun->CurrentOptic->Destroy();
+		}
+		TP_Gun->Destroy();
 		CurrentWeapon->Destroy();
 	}
+	//if (GEngine)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Equipping Weapon"));
+	//}
+	//	
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	CurrentWeapon = GetWorld()->SpawnActor<AHitscanFirearm>(NewWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 	CurrentWeapon->SetOwner(this);
-	CurrentWeapon->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_hand_r"));
-	//CurrentWeapon->GetMeshComponent()->SetCastShadows(false);
 	CurrentWeapon->GetMeshComponent()->SetOnlyOwnerSee(true);
 	CurrentWeapon->GetMeshComponent()->bCastDynamicShadow = false;
 	CurrentWeapon->GetMeshComponent()->CastShadow = false;
+	CurrentWeapon->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_hand_r"));
+	//CurrentWeapon->GetMeshComponent()->SetCastShadows(false);
+	CurrentWeapon->SetupOptic();
+	TP_Gun = GetWorld()->SpawnActor<AHitscanFirearm>(NewWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	TP_Gun->SetOwner(this);
+	TP_Gun->GetMeshComponent()->SetOnlyOwnerSee(false);
+	TP_Gun->GetMeshComponent()->SetOwnerNoSee(true);
+	TP_Gun->GetMeshComponent()->SetCastHiddenShadow(true);
+	TP_Gun->GetMeshComponent()->bCastDynamicShadow = true;
+	TP_Gun->GetMeshComponent()->CastShadow = true;
+	TP_Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("S_hand_r"));
+	TP_Gun->SetupOptic();
+	if (TP_Gun->CurrentOptic)
+	{
+		TP_Gun->CurrentOptic->StaticMesh->bCastDynamicShadow = true;
+		TP_Gun->CurrentOptic->StaticMesh->CastShadow = true;
+		TP_Gun->CurrentOptic->StaticMesh->SetOnlyOwnerSee(false);
+		TP_Gun->CurrentOptic->StaticMesh->SetOwnerNoSee(true);
+		TP_Gun->CurrentOptic->StaticMesh->SetCastHiddenShadow(true);
+	}
+
 	switch (CurrentWeapon->GetWeaponClass())
 	{
 	case EWeaponClass::Primary:
@@ -181,10 +252,20 @@ void ACoopCharacter::SwitchWeapon(TSubclassOf<AHitscanFirearm> NewWeapon)
 		break;
 	}
 	EquippedWeapon = NewWeapon;
+
+	if (HasAuthority())
+	{
+		//OnRep_EquippedWeapon();
+	}
 	if (ProceduralAimingAnimInstance)
 	{
 		ProceduralAimingAnimInstance->UpdateAnimInstanceCurrentWeapon();
 	}
+}
+
+bool ACoopCharacter::Server_SwitchWeapon_Validate(TSubclassOf<AHitscanFirearm> NewWeapon)
+{
+	return true;
 }
 
 void ACoopCharacter::SwitchFireMode()
@@ -249,6 +330,16 @@ void ACoopCharacter::ServerOnFire_Implementation()
 }
 
 bool ACoopCharacter::ServerOnFire_Validate()
+{
+	return true;
+}
+
+void ACoopCharacter::ServerOnStopFire_Implementation()
+{
+	StopFire();
+}
+
+bool ACoopCharacter::ServerOnStopFire_Validate()
 {
 	return true;
 }
@@ -340,6 +431,12 @@ void ACoopCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	DOREPLIFETIME_CONDITION(ACoopCharacter, bIsAiming, COND_SkipOwner);
 	DOREPLIFETIME_CONDITION(ACoopCharacter, OpticIndex, COND_SkipOwner);
+	DOREPLIFETIME(ACoopCharacter, EquippedWeapon);
+	DOREPLIFETIME(ACoopCharacter, CurrentWeapon);
+	DOREPLIFETIME(ACoopCharacter, TP_Gun);
+	//DOREPLIFETIME(ACoopCharacter, SightTransform);
+	//DOREPLIFETIME(ACoopCharacter, RelativeHandTransform);
+	//DOREPLIFETIME(ACoopCharacter, LeftHandTransform);
 }
 
 
